@@ -5,4 +5,5 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^tracy/$', views.tracy, name='tracy'),
     url(r'^success/$', views.success, name='success'),
+    url(r'^profile/$', views.profile, name='profile'),
 ]
