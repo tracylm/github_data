@@ -12,20 +12,23 @@ def success(request):
     return HttpResponse('Success is near.')
 
 def profile(request):
-    jsonList = []
-    req = requests.get('https://api.github.com/users/DrkSephy')
-    #jsonList.append(json.loads(req.content))
-    jsonList.append(req.json())
+    #jsonList = []
     parsedData = []
-    userData = {}
-    for data in jsonList:
-        userData['name'] = data['name']
-        userData['blog'] = data['blog']
-        userData['email'] = data['email']
-        userData['public_gists'] = data['public_gists']
-        userData['public_repos'] = data['public_repos']
-        userData['avatar_url'] = data['avatar_url']
-        userData['followers'] = data['followers']
-        userData['following'] = data['following']
-    parsedData.append(userData)
-    return HttpResponse(parsedData)
+    if request.method == 'POST':
+    #jsonList.append(req.json())
+        username = request.POST.get('user')
+        req = requests.get('http://api.github.com/users/' + username)
+        jsonList = []
+        jsonList.append(req.json())
+        userData = {}
+        for data in jsonList:
+            userData['name'] = data['name']
+            userData['blog'] = data['blog']
+            userData['email'] = data['email']
+            userData['public_gists'] = data['public_gists']
+            userData['public_repos'] = data['public_repos']
+            userData['avatar_url'] = data['avatar_url']
+            userData['followers'] = data['followers']
+            userData['following'] = data['following']
+        parsedData.append(userData)
+    return render(request, 'app/profile.html', {'data': parsedData})
